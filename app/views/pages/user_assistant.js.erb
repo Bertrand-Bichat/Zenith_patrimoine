@@ -1,0 +1,36 @@
+divBtn = document.getElementById('user-<%= @user.id %>');
+firstBtn = divBtn.querySelector('.btn-assistant-first');
+removeBtn = divBtn.querySelector('.btn-assistant-remove');
+addBtn = divBtn.querySelector('.btn-assistant-add');
+roleText = divBtn.closest('tr').querySelector('.role-text');
+firstAssistantBtn = divBtn.closest('tr').querySelector('.assistant-first-btn');
+secondAssistantBtn = divBtn.closest('tr').querySelector('.assistant-second-btn');
+
+<% if @user.assistant? %>
+
+  firstBtn.classList.add('hidden');
+  addBtn.classList.add('hidden');
+  removeBtn.classList.remove('hidden');
+  secondAssistantBtn.classList.remove('hidden');
+
+  <% if @user.admin? %>
+    roleText.textContent = 'Administrateur';
+  <% else %>
+    roleText.textContent = 'Adjoint';
+  <% end %>
+
+<% else %>
+
+  firstBtn.classList.add('hidden');
+  removeBtn.classList.add('hidden');
+  addBtn.classList.remove('hidden');
+  firstAssistantBtn?.classList.add('hidden');
+  secondAssistantBtn.classList.add('hidden');
+
+  <% if @user.admin? %>
+    roleText.textContent = 'Administrateur';
+  <% else %>
+    roleText.textContent = '';
+  <% end %>
+
+<% end %>

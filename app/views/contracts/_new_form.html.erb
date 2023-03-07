@@ -1,0 +1,79 @@
+<!-- new contract form -->
+<%= simple_form_for(contract, method: :post, url: { controller: "contracts", action: "create" }, html: { class: "form-horizontal col-12 border p-3 hidden", data: { target: "contract.newContractForm" } }, wrapper: :horizontal_form) do |f| %>
+  <h2 class="col-12 text-center mb-4" data-contract-target="newContractBtn">Nouvelle instance</h2>
+  <%= f.error_notification %>
+  <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
+  <div class="d-flex justify-content-between flex-column flex-lg-row">
+    <div class="col-12 col-lg-5">
+      <%= f.input :customer_id,
+                  label: customer_name,
+                  collection: customers,
+                  label_method: :name,
+                  value_method: :id,
+                  required: true,
+                  wrapper_html: { class: "col-12 text-center" },
+                  input_html: { autocomplete: 'customer_id' } %>
+      <%= f.input :instance_reason,
+                  label: instance_reason,
+                  collection: instance_reasons,
+                  label_method: :content,
+                  value_method: :content,
+                  wrapper_html: { class: "col-12 text-center" },
+                  input_html: { autocomplete: 'instance_reason' } %>
+      <%= f.input :customer_class,
+                  label: customer_class,
+                  collection: customer_classes,
+                  label_method: :content,
+                  value_method: :content,
+                  wrapper_html: { class: "col-12 text-center" },
+                  input_html: { autocomplete: 'customer_class' } %>
+      <%= f.input :contract_number,
+                  required: true,
+                  label: contract_number,
+                  wrapper_html: { class: "col-12 text-center" },
+                  input_html: { autocomplete: 'contract_number' } %>
+      <%= f.input :explanation,
+                  label: explanation,
+                  wrapper_html: { class: "col-12 text-center" },
+                  input_html: { autocomplete: 'explanation' } %>
+    </div>
+    <div class="col-12 col-lg-2"></div>
+    <div class="col-12 col-lg-5">
+      <% if current_user.admin? || current_user.super_admin? %>
+        <%= f.input :prioritization,
+                    label: prioritization,
+                    collection: prioritizations,
+                    label_method: :content,
+                    value_method: :content,
+                    wrapper_html: { class: "col-12 text-center" },
+                    input_html: { autocomplete: 'prioritization' } %>
+        <%= f.input :monitoring,
+                    label: monitoring,
+                    collection: monitorings,
+                    label_method: :content,
+                    value_method: :content,
+                    wrapper_html: { class: "col-12 text-center" },
+                    input_html: { autocomplete: 'monitoring' } %>
+        <%= f.input :gideon_number,
+                    label: gideon_number,
+                    wrapper_html: { class: "col-12 text-center" },
+                    input_html: { autocomplete: 'gideon_number' } %>
+        <%= f.input :date_of_consideration,
+                    html5: true,
+                    label: date_of_consideration,
+                    label_html: { class: "col-sm-3 col-form-label" },
+                    input_html: { class: "date-input ml-3", autocomplete: 'date_of_consideration' },
+                    wrapper_html: { class: "row col-12 text-center" } %>
+
+      <% end %>
+    </div>
+  </div>
+
+  <div class="d-flex">
+    <%= f.button :submit, 'Valider', class: "btn btn-primary w-50 mt-3 mx-3 text-center font-weight-bold button-text" %>
+    <!-- cancel button -->
+    <a data-action="click->contract#newContract" class="btn btn-primary w-50 mt-3 mx-3 text-center font-weight-bold button-text">
+      Annuler
+    </a>
+  </div>
+<% end %>

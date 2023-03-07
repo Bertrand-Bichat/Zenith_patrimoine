@@ -1,0 +1,33 @@
+<header>
+  <nav class="navbar navbar-light" data-contract-target="navbar">
+
+    <button class="navbar-toggler mt-3 ml-3" type="button" data-action="click->contract#toggleNavbar" aria-label="menu de navigation principal">
+      <i class="fas fa-bars"></i>
+    </button>
+
+    <div class="navbar-lewagon navbar-collapse" id="navbarSupportedContent">
+      <%= link_to '' do %>
+        <i class="fas fa-times cursor-click" data-action="click->contract#toggleNavbar"></i>
+      <% end %>
+      <ul class="navbar-nav navbar-brand mt-4">
+        <% if user_signed_in? %>
+            <li class="nav-item d-flex flex-column px-md-0">
+              <%= link_to 'Instances', client_files_path, class: "btn btn-primary text-white button-text font-weight-bold mr-lg-3 mb-2 mb-lg-0" %>
+              <%= link_to 'Clients', admin_dashboard_customers_path, class: "btn btn-primary text-white button-text font-weight-bold mr-lg-3 mb-2 mb-lg-0" %>
+              <% if current_user.super_admin? %>
+                <%= link_to 'Agents', admin_dashboard_users_path, class: "btn btn-primary text-white button-text font-weight-bold mr-lg-3 mb-2 mb-lg-0" %>
+                <%= link_to 'Critères', admin_dashboard_criteria_path, class: "btn btn-primary text-white button-text font-weight-bold mr-lg-3 mb-2 mb-lg-0" %>
+              <% end %>
+              <%= link_to 'Modifier mon profil', edit_user_registration_path, class: "btn btn-primary text-white button-text font-weight-bold mr-md-3 mb-2 mb-md-0" %>
+              <%= link_to 'Se déconnecter', destroy_user_session_path, method: :delete, class: "btn btn-primary text-white button-text font-weight-bold mr-md-3 mb-2 mb-md-0" %>
+            </li>
+        <% else %>
+          <li class="nav-item">
+            <%= link_to 'Se connnecter', root_path, class: "btn btn-primary button-text text-white font-weight-bold" %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+
+  </nav>
+</header>

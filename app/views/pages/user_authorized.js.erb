@@ -1,0 +1,21 @@
+divBtn = document.getElementById('user-<%= @user.id %>');
+firstBtn = divBtn.querySelector('.btn-authorized-first');
+removeBtn = divBtn.querySelector('.btn-authorized-remove');
+addBtn = divBtn.querySelector('.btn-authorized-add');
+authorizedText = divBtn.closest('tr').querySelector('.authorized-text');
+
+<% if @user.authorized? %>
+
+  firstBtn.classList.add('hidden');
+  addBtn.classList.add('hidden');
+  removeBtn.classList.remove('hidden');
+  authorizedText.textContent = 'Oui';
+
+<% else %>
+
+  firstBtn.classList.add('hidden');
+  removeBtn.classList.add('hidden');
+  addBtn.classList.remove('hidden');
+  authorizedText.textContent = 'Non';
+
+<% end %>

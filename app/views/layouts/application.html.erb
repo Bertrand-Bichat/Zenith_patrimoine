@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Meta données -->
+    <title>Gestion des instances</title>
+    <meta name="Language" content="fr" />
+
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <!-- flatpickr stylesheet -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload', defer: true %>
+    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload', defer: true %>
+  </head>
+
+  <body data-controller="contract">
+    <!-- navbar -->
+    <% unless ['sessions', 'registrations', 'passwords'].include?(controller_name) %>
+      <%= render 'shared/navbar' %>
+    <% end %>
+
+    <!-- notificaitons flashes -->
+    <%= render 'shared/flashes' %>
+
+    <main role="main" data-contract-target="mainSection">
+      <%= yield %>
+    </main>
+
+    <!-- footer -->
+    <%= render 'shared/footer' %>
+
+    <!-- top arrow -->
+    <button id="myBtn" title="Retour en haut de la page"><i class="fas fa-chevron-circle-up"></i></button>
+  </body>
+</html>

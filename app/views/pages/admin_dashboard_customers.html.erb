@@ -1,0 +1,76 @@
+<div class="container">
+  <!-- new customer modal form -->
+  <a data-toggle="modal" data-target="#form-customer" class="btn btn-primary text-center col-12 col-md-4 my-5 font-weight-bold button-text" aria-label="ajouter un nouveau client">
+    Ajouter un nouveau client
+  </a>
+  <div class="modal fade" id="form-customer" tabindex="-1" role="dialog" aria-label="formulaire pour ajouter un nouveau client" aria-modal="true" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="text-center">Nouveau client</h2>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Fermer">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body text-left">
+          <%= simple_form_for(@customer, method: :post, url: { controller: "customers", action: "create" }) do |f| %>
+            <%= f.error_notification %>
+            <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
+            <%= f.input :name,
+                        label: 'Nom',
+                        input_html: { autocomplete: 'name' } %>
+            <%= f.input :client_number,
+                        label: 'Numéro client',
+                        input_html: { autocomplete: 'client_number' } %>
+            <% if current_user.admin? || current_user.super_admin? %>
+              <%= f.input :user_id,
+                          required: true,
+                          label: 'Agent',
+                          collection: @agents,
+                          label_method: :full_name,
+                          value_method: :id,
+                          input_html: { autocomplete: 'user_id' } %>
+            <% end %>
+            <%= f.button :submit, 'Ajouter', class: "btn btn-primary w-100 text-center font-weight-bold button-text" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- title -->
+  <h1 class="text-left font-weight-bold col-12"><%= @customers.size %> clients en base de données</h1>
+
+  <!-- table of all users -->
+  <table class="table table-hover table-responsive table-bordered text-center w-100 mb-5">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Nom</th>
+        <th scope="col">N° de client</th>
+        <th scope="col">Nbre instances</th>
+        <% if current_user.super_admin? || current_user.admin? %>
+          <th scope="col">Agent</th>
+        <% end %>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @customers.each do |customer| %>
+        <tr>
+          <td><%= customer.name %></td>
+          <td><%= customer.client_number %></td>
+          <td><%= customer.contracts.size %></td>
+          <% if current_user.super_admin? || current_user.admin? %>
+            <td><%= customer.user.full_name %></td>
+          <% end %>
+          <td>
+            <% if policy(customer).edit? %>
+              <%= link_to 'Modifier', edit_customer_path(customer.id), class: "btn btn-primary button-text font-weight-bold" %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+</div>

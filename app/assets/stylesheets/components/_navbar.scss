@@ -1,0 +1,43 @@
+.navbar-lewagon {
+  // justify-content: space-between;
+  // background: white;
+  height: 100%; /* Full-height: remove this if you want "auto" height */
+  width: 300px; /* Set the width of the sidebar */
+  position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+  z-index: 2; /* Stay on top */
+  top: 0; /* Stay at the top */
+  background-color: white; /* Black */
+  overflow-x: hidden; /* Disable horizontal scroll */
+  padding-top: 20px;
+  left: -110%;
+  visibility: visible;
+  transition: all 0.5s ease 0s;
+  // position: relative;
+}
+
+.closed .navbar-lewagon {
+  left: 0;
+  visibility: visible;
+}
+
+.navbar-lewagon a {
+  margin: 10px;
+  overflow-wrap: break-word;
+}
+
+.navbar-lewagon .navbar-collapse {
+  flex-grow: 0;
+}
+
+.navbar-lewagon .navbar-brand img {
+  width: 40px;
+}
+
+.navbar-toggler {
+  background-color: $blue;
+}
+
+.fa-bars {
+  font-size: 30px;
+  color: white;
+}

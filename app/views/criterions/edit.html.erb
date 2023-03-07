@@ -1,0 +1,22 @@
+<div class="container">
+
+    <h1 class="text-center my-5">Modifier un critère</h1>
+
+    <div class="mt-5 text-center border border-dark p-4">
+      <%= simple_form_for(@criterion) do |f| %>
+        <%= f.error_notification %>
+        <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
+        <%= f.input :content,
+                    required: true,
+                    label: 'Contenu',
+                    input_html: { autocomplete: 'content' } %>
+        <%= f.input :column,
+                    required: true,
+                    label: 'Colonne',
+                    collection: new_criterion_array,
+                    input_html: { autocomplete: 'column' } %>
+        <%= f.button :submit, 'Modifier', class: "btn btn-primary w-100 text-center font-weight-bold button-text" %>
+      <% end %>
+    </div>
+
+</div>

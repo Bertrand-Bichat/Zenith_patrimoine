@@ -1,0 +1,17 @@
+<% contracts.each do |contract| %>
+  <tr class="text-nowrap" data-action="click->contract#selected" data-contract-target="uniqContract" data-id="<%= contract.id %>">
+    <td class="agent"><%= contract.customer.user.full_name %></td>
+    <td class="instanceReason"><%= contract.instance_reason %></td>
+    <td class="customerNumber"><%= contract.customer.client_number %></td>
+    <td class="customerName" data-id="<%= contract.customer.id %>"><%= contract.customer.name %></td>
+    <td class="customerClass"><%= contract.customer_class %></td>
+    <td class="contractNumber"><%= contract.contract_number %></td>
+    <td class="instanceDate"><%= contract.created_at.to_date.strftime("%d/%m/%Y") %></td>
+    <td class="explanation"><%= contract.explanation %></td>
+    <td class="prioritization"><%= contract.prioritization %></td>
+    <td class="monitoring"><%= contract.monitoring %></td>
+    <td class="dateOfConsideration"><%= contract.date_of_consideration ? contract.date_of_consideration.to_date.strftime("%d/%m/%Y") : '' %></td>
+    <td class="gideonNumber"><%= contract.gideon_number %></td>
+    <td class="delegation"><%= contract.customer.user.find_assistant.full_name %></td>
+  </tr>
+<% end %>

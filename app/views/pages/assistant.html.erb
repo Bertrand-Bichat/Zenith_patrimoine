@@ -1,0 +1,75 @@
+<div class="container">
+  <!-- link back -->
+  <p>
+    <%= link_to admin_dashboard_users_path, class: "btn btn-primary" do %>
+      <i class="fas fa-chevron-left"></i> Retour
+    <% end %>
+  </p>
+
+  <!-- title -->
+  <h1 class="text-center font-weight-bold">
+    Gestion des agents de la délégation de : <br>
+    <%= @user.full_name %>
+  </h1>
+
+  <!-- new delegation -->
+  <a data-toggle="modal" data-target="#form-customer" class="btn btn-primary text-center col-12 col-lg-4 my-5 font-weight-bold button-text" aria-label="ajouter un nouveau client">
+    Ajouter un nouvel agent
+  </a>
+  <div class="modal fade" id="form-customer" tabindex="-1" role="dialog" aria-label="formulaire pour ajouter un nouveau client" aria-modal="true" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="text-center">Nouvel agent à supperviser</h2>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Fermer">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body text-left">
+          <%= simple_form_for(@delegation, method: :post, url: { controller: "delegations", action: "create" }) do |f| %>
+            <%= f.error_notification %>
+            <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
+            <%= f.input :agent_id,
+                        required: true,
+                        label: 'Agent',
+                        collection: @agents,
+                        label_method: :full_name,
+                        value_method: :id,
+                        input_html: { autocomplete: 'agent_id' } %>
+            <%= f.hidden_field :assistant_id, value: @user.id %>
+            <%= f.button :submit, 'Ajouter', class: "btn btn-primary w-100 text-center font-weight-bold button-text" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-5">
+    <!-- agents -->
+    <table class="table table-hover table-responsive text-center col-12 col-lg-9 mt-3 mt-lg-0">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">Nom</th>
+          <th scope="col">Email</th>
+          <th scope="col">Autorisé</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @user_agents.each do |user| %>
+          <tr id="delegation-<%= user.agent_delegation.id %>">
+            <td><%= user.full_name %></td>
+            <td><%= user.email %></td>
+            <td><%= user.authorized? ? 'Oui' : 'Non' %></td>
+            <td>
+              <% if policy(:delegation).destroy? && (user != @user)  %>
+                <%= link_to 'Supprimer', delegation_path(user.agent_delegation.id), remote: true, method: :delete, class: "btn btn-primary button-text font-weight-bold" %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+</div>

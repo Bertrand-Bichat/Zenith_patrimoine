@@ -1,0 +1,16 @@
+.button-text {
+  font-size: 1.25rem;
+}
+
+.fa-times {
+  font-size: 1.75rem;
+  color: $blue;
+  padding: 8px;
+  position: absolute;
+  right: 0;
+  margin-right: 5px;
+}
+
+.blur {
+  filter: blur(5px);
+}

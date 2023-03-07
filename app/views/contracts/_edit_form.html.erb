@@ -1,0 +1,103 @@
+<div class="col-12 border p-3 hidden" data-contract-target="fullEditForm">
+
+  <h2 class="col-12 text-center mb-4" data-contract-target="editContractBtn">Modifier une instance</h2>
+
+  <!-- agent info -->
+  <%= simple_form_for(:user, html: { class: "form-horizontal col-12 col-lg-5 px-4" }, wrapper: :horizontal_form) do |f| %>
+    <%= f.input :first_name,
+                label: 'Agent',
+                input_html: { autocomplete: 'first_name', disabled: true, data: { target: "contract.agentName" } } %>
+  <% end %>
+
+
+  <div class="row pt-lg-3 px-4">
+    <!-- customer info -->
+    <%= simple_form_for(:customer, html: { class: "form-horizontal col-12 col-lg-5" }, wrapper: :horizontal_form) do |f| %>
+      <%= f.input :client_number,
+                  label: customer_number,
+                  input_html: { autocomplete: 'client_number', disabled: true, data: { target: "contract.customerNumber" } } %>
+    <% end %>
+
+    <div class="col-2"></div>
+
+    <!-- delegation info -->
+    <%= simple_form_for(:delegation, html: { class: "form-horizontal col-12 col-lg-5" }, wrapper: :horizontal_form) do |f| %>
+      <%= f.input :assistant_id,
+                  label: delegation,
+                  input_html: { autocomplete: 'assistant_id', disabled: true, data: { target: "contract.delegation" } } %>
+    <% end %>
+  </div>
+
+  <!-- edit contract form -->
+  <%= simple_form_for(contract, method: :patch, url: contract_path(contract), html: { class: "form-horizontal col-12", data: { target: "contract.editContractForm" } }, wrapper: :horizontal_form) do |f| %>
+    <%= f.error_notification %>
+    <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
+    <div class="d-flex justify-content-between flex-column flex-md-row">
+      <div class="col-12 col-lg-5">
+        <%= f.input :customer_id,
+                    label: customer_name,
+                    collection: customers,
+                    label_method: :name,
+                    value_method: :id,
+                    input_html: { autocomplete: 'customer_id', disabled: true, data: { target: "contract.customerName" } } %>
+        <%= f.input :instance_reason,
+                    label: instance_reason,
+                    collection: instance_reasons,
+                    label_method: :content,
+                    value_method: :content,
+                    input_html: { autocomplete: 'instance_reason', data: { target: "contract.instanceReason" } } %>
+        <%= f.input :customer_class,
+                    label: customer_class,
+                    collection: customer_classes,
+                    label_method: :content,
+                    value_method: :content,
+                    input_html: { autocomplete: 'customer_class', data: { target: "contract.customerClass" } } %>
+        <%= f.input :contract_number,
+                    required: true,
+                    label: contract_number,
+                    input_html: { autocomplete: 'contract_number', data: { target: "contract.contractNumber" } } %>
+        <%= f.input :explanation,
+                    label: explanation,
+                    input_html: { autocomplete: 'explanation', data: { target: "contract.explanation" } } %>
+      </div>
+      <div class="col-12 col-lg-2"></div>
+      <div class="col-12 col-lg-5">
+        <%= f.input :created_at,
+                    label: instance_date,
+                    html5: true,
+                    label_html: { class: "col-sm-3 col-form-label" },
+                    input_html: { class: "date-input ml-3", disabled: true, autocomplete: 'created_at', data: { target: "contract.instanceDate" } },
+                    wrapper_html: { class: "row" } %>
+        <%= f.input :prioritization,
+                    label: prioritization,
+                    collection: prioritizations,
+                    label_method: :content,
+                    value_method: :content,
+                    input_html: { autocomplete: 'prioritization', disabled: @disabled, data: { target: "contract.prioritization" } } %>
+        <%= f.input :monitoring,
+                    label: monitoring,
+                    collection: monitorings,
+                    label_method: :content,
+                    value_method: :content,
+                    input_html: { autocomplete: 'monitoring', disabled: @disabled, data: { target: "contract.monitoring" } } %>
+        <%= f.input :date_of_consideration,
+                    label: date_of_consideration,
+                    html5: true,
+                    label_html: { class: "col-sm-3 col-form-label" },
+                    input_html: { class: "date-input ml-3", disabled: @disabled, autocomplete: 'date_of_consideration', data: { target: "contract.dateOfConsideration" } },
+                    wrapper_html: { class: "row" } %>
+        <%= f.input :gideon_number,
+                    label: gideon_number,
+                    input_html: { autocomplete: 'gideon_number', disabled: @disabled, data: { target: "contract.gideonNumber" } } %>
+      </div>
+    </div>
+
+    <div class="d-flex">
+      <%= f.button :submit, 'Valider', class: "btn btn-primary w-50 mt-3 mx-3 text-center font-weight-bold button-text" %>
+      <a data-action="click->contract#editContract" class="btn btn-primary w-50 mt-3 mx-3 text-center font-weight-bold button-text">
+        Annuler
+      </a>
+    </div>
+  <% end %>
+
+</div>

@@ -1,0 +1,150 @@
+<div class="px-5 pb-5 pt-2">
+
+  <!-- title -->
+  <h1 class="text-center mb-5 font-weight-bold">Gestion des instances de <span data-contract-target="currentUserName" data-role="<%= @role %>"><%= current_user.full_name %></span> (<%= @contracts_size %>)</h1>
+
+  <!-- filters -->
+  <div class="border p-3 mb-5">
+    <%= simple_form_for(:contract, html: { class: "" }) do |f| %>
+      <div class="row justify-content-between flex-column flex-md-row w-100">
+        <%= f.input :instance_reason,
+                    label: instance_reason,
+                    collection: @instance_reasons,
+                    label_method: :content,
+                    value_method: :content,
+                    required: false,
+                    input_html: { data: { target: 'contract.sort contract.instanceReasonInput', action: "change->contract#contractsSorting" } },
+                    wrapper_html: { class: "col-12 col-md-6 col-lg-3 text-center px-4" } %>
+        <%= f.input :monitoring,
+                    label: monitoring,
+                    collection: @monitorings,
+                    label_method: :content,
+                    value_method: :content,
+                    required: false,
+                    input_html: { data: { target: 'contract.sort contract.monitoringInput', action: "change->contract#contractsSorting" } },
+                    wrapper_html: { class: "col-12 col-md-6 col-lg-3 text-center px-4" } %>
+        <%= f.input :customer_class,
+                    label: customer_class,
+                    collection: @customer_classes,
+                    label_method: :content,
+                    value_method: :content,
+                    required: false,
+                    input_html: { data: { target: 'contract.sort contract.customerClassInput', action: "change->contract#contractsSorting" } },
+                    wrapper_html: { class: "col-12 col-md-6 col-lg-3 text-center px-4" } %>
+        <%= f.input :customer_id,
+                    label: customer_name,
+                    collection: @customers,
+                    label_method: :name,
+                    value_method: :name,
+                    required: false,
+                    input_html: { data: { target: 'contract.sort contract.customerNameInput', action: "change->contract#contractsSorting" } },
+                    wrapper_html: { class: "col-12 col-md-6 col-lg-3 text-center px-4" } %>
+      </div>
+    <% end %>
+    <div class="row justify-content-between align-items-end flex-column flex-md-row w-100 mt-lg-3">
+      <!-- contract_number -->
+      <div class="col-12 col-md-6 col-lg-3">
+        <%= simple_form_for(:contract, html: { class: "" }) do |f| %>
+          <%= f.input :contract_number,
+                      label: contract_number,
+                      collection: @contract_numbers,
+                      required: false,
+                      input_html: { data: { target: 'contract.sort contract.contractNumberInput', action: "change->contract#contractsSorting" } },
+                      wrapper_html: { class: "text-center px-2" } %>
+        <% end %>
+      </div>
+      <!-- prioritization -->
+      <div class="col-12 col-md-6 col-lg-3">
+        <%= simple_form_for(:contract, html: { class: "" }) do |f| %>
+          <%= f.input :prioritization,
+                      label: prioritization,
+                      collection: @prioritizations,
+                      required: false,
+                      label_method: :content,
+                      value_method: :content,
+                      wrapper_html: { class: "text-center px-2" },
+                      input_html: { data: { target: 'contract.sort contract.prioritizationInput', action: "change->contract#contractsSorting" } } %>
+        <% end %>
+      </div>
+      <!-- agent name -->
+      <div class="col-12 col-md-6 col-lg-3">
+        <% if @agents.present? %>
+          <%= simple_form_for(:user, html: { class: "" }) do |f| %>
+            <%= f.input :pseudo,
+                        label: agent,
+                        collection: @agents,
+                        label_method: :full_name,
+                        value_method: :full_name,
+                        required: false,
+                        input_html: { data: { target: 'contract.sort contract.agentNameInput', action: "change->contract#contractsSorting" } },
+                        wrapper_html: { class: "text-center px-2" } %>
+          <% end %>
+        <% end %>
+      </div>
+      <!-- delegation -->
+      <div class="col-12 col-md-6 col-lg-3">
+        <% if @assistants.present? %>
+          <%= simple_form_for(:user, html: { class: "" }) do |f| %>
+            <%= f.input :pseudo,
+                        label: delegation,
+                        collection: @assistants,
+                        label_method: :full_name,
+                        value_method: :full_name,
+                        required: false,
+                        input_html: { data: { target: 'contract.sort contract.delegationInput', action: "change->contract#contractsSorting" } },
+                        wrapper_html: { class: "text-center px-2" } %>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- erase sorting criteria button -->
+    <div class="row justify-content-between align-items-end flex-column flex-md-row w-100 mt-lg-3">
+      <div class="col-12 col-md-6 col-lg-3 mt-3 mb-md-3">
+        <a data-action="click->contract#erase" class="btn btn-primary w-100 text-center font-weight-bold button-text" aria-label="effacer les critères de tri" title="effacer les critères de tri">
+          Effacer
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- new contract button -->
+  <div class="row">
+    <div class="col-4"></div>
+    <a data-action="click->contract#newContract" class="btn btn-primary text-center col-4 font-weight-bold button-text" aria-label="ajouter un nouvelle instances">
+      Nouvelle instance
+    </a>
+    <div class="col-4"></div>
+  </div>
+
+  <!-- contracts list & forms -->
+  <div class="row px-2">
+
+    <!-- list -->
+    <table class="table table-responsive table-bordered text-center w-100 my-5 bg-white contract-table">
+      <thead class="thead-dark">
+        <tr class="text-nowrap contract-tr">
+          <th scope="col">Agent</th>
+          <% criterion_array.each do |criterion| %>
+            <th scope="col"><%= criterion %></th>
+          <% end %>
+        </tr>
+      </thead>
+      <tbody class="contract-table-body">
+        <%= render 'contracts_table', contracts: @contracts %>
+      </tbody>
+    </table>
+
+    <!-- forms -->
+    <div class="row my-5 w-100">
+      <% if current_user.assistant? && !current_user.admin? && !current_user.super_admin? %>
+        <%= render 'contracts/new_form', contract: @new_contract, customers: @user_customers, instance_reasons: @instance_reasons, customer_classes: @customer_classes, prioritizations: @prioritizations, monitorings: @monitorings %>
+        <%= render 'contracts/edit_form', contract: @last_contract, customers: @customers, instance_reasons: @instance_reasons, customer_classes: @customer_classes, prioritizations: @prioritizations, monitorings: @monitorings %>
+      <% else %>
+        <%= render 'contracts/new_form', contract: @new_contract, customers: @customers, instance_reasons: @instance_reasons, customer_classes: @customer_classes, prioritizations: @prioritizations, monitorings: @monitorings %>
+        <%= render 'contracts/edit_form', contract: @last_contract, customers: @customers, instance_reasons: @instance_reasons, customer_classes: @customer_classes, prioritizations: @prioritizations, monitorings: @monitorings %>
+      <% end %>
+    </div>
+  </div>
+
+</div>

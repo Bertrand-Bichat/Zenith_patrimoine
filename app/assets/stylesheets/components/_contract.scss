@@ -1,0 +1,30 @@
+.contract-selected {
+  color: white;
+  background-color: $blue;
+  font-weight: bold;
+  &:hover {
+    color: white;
+    background-color: $blue;
+    font-weight: bold;
+  }
+}
+
+.contract-table {
+  height: 60vh;
+}
+
+.contract-table-body {
+  overflow: scroll;
+}
+
+.contract-tr {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.simple_form label {
+  color: $blue;
+  font-weight: bold;
+  font-size: 1.15rem;
+}

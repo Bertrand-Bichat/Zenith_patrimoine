@@ -1,0 +1,67 @@
+<div class="container">
+  <!-- title -->
+  <h1 class="text-center mb-5 mt-3 font-weight-bold"><%= @users.size %> agents en base de données</h1>
+
+  <!-- table of all users -->
+  <table class="table table-hover table-responsive table-bordered text-center w-100 my-5">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Nom</th>
+        <th scope="col">Email</th>
+        <th scope="col">Autorisé</th>
+        <th scope="col">Rôle</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @users.each do |user| %>
+        <tr>
+          <td><%= user.full_name %></td>
+          <td><%= user.email %></td>
+          <td class="authorized-text"><%= user.authorized? ? 'Oui' : 'Non' %></td>
+          <td>
+            <span class="role-text">
+              <% if user.super_admin? %>
+                SuperAdmin
+              <% elsif user.admin? %>
+                Administrateur
+              <% elsif user.assistant? %>
+                Adjoint
+              <% end %>
+            </span>
+            <% if user.assistant? %>
+              <p><%= link_to assistant_path(user.id), class: "assistant-first-btn", title: "Gestion de sa délégation", aria: { label: 'page adjoint' } do %><i class="fas fa-eye"></i><% end %></p>
+            <% end %>
+            <p><%= link_to assistant_path(user.id), class: "assistant-second-btn hidden", title: "Gestion de sa délégation", aria: { label: 'page adjoint' } do %><i class="fas fa-eye"></i><% end %></p>
+          </td>
+          <td id="user-<%= user.id %>" class="d-flex justify-content-between">
+            <% unless user.super_admin? %>
+              <span class="mr-3">
+                <% if policy(:page).user_authorized? %>
+                  <%= link_to "#{user.authorized? ? '- Autoriser' : '+ Autoriser'}", user_authorized_path(user.id), remote: true, method: :patch, class: "btn btn-primary btn-authorized-first button-text font-weight-bold #{user.authorized? ? '' : ''}" %>
+                  <%= link_to '- Autoriser', user_authorized_path(user.id), remote: true, method: :patch, class: "btn btn-primary button-text font-weight-bold hidden btn-authorized-remove" %>
+                  <%= link_to '+ Autoriser', user_authorized_path(user.id), remote: true, method: :patch, class: "btn btn-primary button-text font-weight-bold hidden btn-authorized-add" %>
+                <% end %>
+              </span>
+              <span class="mr-3">
+                <% if policy(:page).user_assistant? %>
+                  <%= link_to "#{user.assistant? ? '- Adjoint' : '+ Adjoint'}", user_assistant_path(user.id), remote: true, method: :patch, class: "btn btn-primary button-text font-weight-bold btn-assistant-first #{user.assistant? ? '' : ''}" %>
+                  <%= link_to '- Adjoint', user_assistant_path(user.id), remote: true, method: :patch, class: "btn btn-primary button-text font-weight-bold hidden btn-assistant-remove" %>
+                  <%= link_to '+ Adjoint', user_assistant_path(user.id), remote: true, method: :patch, class: "btn btn-primary button-text font-weight-bold hidden btn-assistant-add" %>
+                <% end %>
+              </span>
+              <span>
+                <% if policy(:page).user_admin? %>
+                  <%= link_to "#{user.admin? ? '- Admin' : '+ Admin'}", user_admin_path(user.id), remote: true, method: :patch, class: "btn btn-primary button-text font-weight-bold btn-admin-first #{user.admin? ? '' : ''}" %>
+                  <%= link_to '- Admin', user_admin_path(user.id), remote: true, method: :patch, class: "btn btn-primary button-text font-weight-bold hidden btn-admin-remove" %>
+                  <%= link_to '+ Admin', user_admin_path(user.id), remote: true, method: :patch, class: "btn btn-primary button-text font-weight-bold hidden btn-admin-add" %>
+                <% end %>
+              </span>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+</div>
